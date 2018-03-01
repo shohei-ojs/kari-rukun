@@ -2,19 +2,19 @@ if (!navigator.geolocation) {
   alert("この端末では位置情報が取得できません。");
 }
 
-var calil = new Calil({
-	'appkey' : 'e669768ee20f978197cfd3a43b1375c1',
-	'render': new CalilRender(),
-	'isbn' : 4163902309,
-	'systemid' : "Tokyo_Setagaya"
-});
-console.log(calil)
-console.log(calil.search());
 // 現在地を取得
 navigator.geolocation.getCurrentPosition(
   // 取得成功した場合
   function(position) {
       alert("緯度:"+position.coords.latitude+",経度"+position.coords.longitude);
+      $.ajax({
+        type: "GET",
+        dataType: "jsonp",
+        url: "http://api.calil.jp/check?appkey={e669768ee20f978197cfd3a43b1375c1}&isbn=4834000826&systemid=Aomori_Pref&format=json",
+        success: function(msg) {
+          console.log(msg);
+        }
+      })
   },
   // 取得失敗した場合
   function(error) {
