@@ -1,7 +1,6 @@
 var position = 0
 var inputInsb = document.getElementById('INSB').getElementsByTagName("input");
 inputInsb[0].disabled = inputInsb[1].disabled = true
-console.log(inputInsb[0].disabled)
 
 if (!navigator.geolocation) alert("この端末では位置情報が取得できません。");
 function exeSearch() {
@@ -12,9 +11,8 @@ navigator.geolocation.getCurrentPosition(
   // 取得成功した場合
   (pos) => {
     position = pos
-    inputInsb[0].disabled = inputInsb[1].disabled = true
-    button[0].placeholder = '本のINSB-10を入力（本の名前とか受け付けないよ）'
-    console.log(document.getElementById('INSB').disabled)
+    inputInsb[0].disabled = inputInsb[1].disabled = false
+    inputInsb[0].placeholder = '本のINSB-10を入力（本の名前とか受け付けないよ）'
   },
   // 取得失敗した場合
   (erroe) => failedGetLocation (error)
@@ -41,14 +39,14 @@ function failedGetLocation (error) {
       break;
   }
 }
+
 function callAPI () {
   $.ajax({
     type: "GET",
     dataType: "jsonp",
-    url: "http://api.calil.jp/check?appkey={e669768ee20f978197cfd3a43b1375c1}&isbn=4834000826&systemid=Aomori_Pref&format=json",
+    url: "http://api.calil.jp/library?appkey={e669768ee20f978197cfd3a43b1375c1}&isbn="+inputInsb[0].value+"&geocode="+position.coords.latitude+","+position.coords.longitude+"&distance=1&format=json",
     success: function(msg) {
-      console.log(button.disabled);
+      console.log(msg);
     }
   })
 }
-
