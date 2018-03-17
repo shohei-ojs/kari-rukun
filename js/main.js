@@ -23,6 +23,23 @@ function successGetLocation (position) {
   callAPI()
 }
 
+function callAPI () {
+  console.log(position.coords.latitude)
+  $.ajax({
+    type: "GET",
+    dataType: "jsonp",
+    url: "http://api.calil.jp/library?appkey=e669768ee20f978197cfd3a43b1375c1",
+    data: {
+      geocode: position.coords.longitude+","+position.coords.latitude,
+      limit: 5,
+      format: "json"
+    },
+    success: function(msg) {
+      console.log(msg);
+    }
+  })
+}
+
 function failedGetLocation (error) {
   switch(error.code) {
     case 1: //PERMISSION_DENIED
@@ -38,15 +55,4 @@ function failedGetLocation (error) {
       alert("その他のエラー(エラーコード:"+error.code+")");
       break;
   }
-}
-
-function callAPI () {
-  $.ajax({
-    type: "GET",
-    dataType: "jsonp",
-    url: "http://api.calil.jp/library?appkey={e669768ee20f978197cfd3a43b1375c1}&isbn="+inputInsb[0].value+"&geocode="+position.coords.latitude+","+position.coords.longitude+"&distance=1&format=json",
-    success: function(msg) {
-      console.log(msg);
-    }
-  })
 }
